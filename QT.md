@@ -44,7 +44,7 @@ ps. 用户变量是指只对当前用户有效变量，全局变量是对该计�
 | 变量名    | 变量值                         | 注释                                                                     |
 | PATH      | C:\mingw32\bin;D:\QT\4.8.6\bin | （MinGw 中的 bin 文件夹和 QT 目录中的 bin 文件夹的位置 多条则用';'分隔） |
 | QTDIR     | D:\QT\4.8.6                    | （QT 的根目录）                                                          |
-| QMAKESPEC | D:\QT\4.8.6\mkspecs\win32-g++  | （QT 的子文件夹 win32-g++位置）                                          |
+| QMAKESPEC | D:\QT\4.8.6\mkspecs\win32-g++  | （QT 的子文件夹 win32-g++ 位置）                                         |
 
 打开 QT 控制台终端分别输入：make -v 和 qmake -v 和 g++ -v 看是否执行成功 如果失败则重新检查环境变量的配置
 
@@ -55,6 +55,8 @@ ps. 用户变量是指只对当前用户有效变量，全局变量是对该计�
 
    ![配置编译器](./img/QT/configuration-compiler.png)
    
+   ps. 名称那一栏可以仿照原来写的有意义一些，如：`MinGW (C++, x86 64bits in C:\mingw32\bin\a)`
+   
 2. 切换到【QT Versions】一栏并进行 QT 版本的配置，点击右上角【添加】会让你选择 `qmake.exe` 文件，进入你安装的 QT 版本根目录下的 bin 文件夹选择该文件就好了，如下图所示：
 
    ![配置 make](./img/QT/configuration-make.png)
@@ -62,6 +64,8 @@ ps. 用户变量是指只对当前用户有效变量，全局变量是对该计�
 3. 切换到【构建套件 (Kit) 】选项卡，点击【桌面】那一行，在下面【调试器】旁的下拉列表中选择你的 `gdb.exe` 调试器路径，整体配置完毕后，点击【OK】，如下图所示：
 
    ![配置 kit](./img/QT/configuration-kit.png)
+   
+   ps. 编译器 C++ 选择刚刚添加的那个。
 
 
 ### 可能的错误
