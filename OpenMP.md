@@ -1,5 +1,12 @@
-# Windows
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-generate-toc again -->
+**Table of Contents**
 
+- [Windows](#windows)
+
+<!-- markdown-toc end -->
+
+
+# Windows
 OpenMP 框架是使用 C、C++ 和 Fortran 进行并发编程的一种强大方法。GNU Compiler Collection (GCC) V4.2 支持 OpenMP 2.5 标准，而 GCC 4.4 支持最新的 OpenMP 3 标准。包括 Microsoft® Visual Studio 在内的其他编译器也支持 OpenMP。
 
 虽然是这么说的，但是如果使用 CodeBlocks 的 gcc 的话，在 CodeBlocks 安装过程中并不让装这些组件，需要自己装个 [tdm-gcc with mingw](http://tdm-gcc.tdragon.net/download)

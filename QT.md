@@ -1,3 +1,17 @@
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-generate-toc again -->
+**Table of Contents**
+
+- [Windows](#windows)
+    - [QT4](#qt4)
+        - [准备工作](#准备工作)
+        - [安装步骤：](#安装步骤：)
+        - [配置环境变量](#配置环境变量)
+        - [配置 QT Creator](#配置-qt-creator)
+        - [可能的错误](#可能的错误)
+
+<!-- markdown-toc end -->
+
+
 # Windows
 ## QT4
 
