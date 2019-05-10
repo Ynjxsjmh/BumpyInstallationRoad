@@ -98,13 +98,20 @@ http://www.cnblogs.com/lxmwb/p/6352220.html
 
 编写 Qt 应用我们需要有 Qt 库、编译器（vs 或 gcc）、调试器（gdb），最后还需要 Qt Creator 这一 IDE 将它们都整合到一起为我们所用。在 Qt4 时代，这些东西都是分开的，需要开发者们自己动手配置开发环境。而 Qt5 版本出来之后，将所有需要的东西都整合到了安装包中，并且环境可以自动配置，为开发者减轻了不少负担。
 
-安装 QT5 基本一路 next，到下面这个界面后全选（如果你的硬盘不够大，则在默认的基础上加上 Tools 里的 MinGw4.9.2 即可），再“下一步”，最后安装即可！
+1. [qt-opensource-windows-x86-mingw492-5.6.1.exe](https://download.qt.io/archive/qt/) 选一个需要的版本即可。
 
-![配置 QT5](./img/QT/QT5.jpg)
+安装 QT5 基本一路 next，到下面这个界面后全选（如果你的硬盘不够大，则在默认的基础上加上 QT 版本号里的 MinGW4.9.2 即可，别选成了 Tools 里的），再“下一步”，最后安装即可！
 
-最后还需要配置套件（kit）：工具—选项—构建和运行—构建套件 
+![配置 QT5，https://blog.csdn.net/qq_23473839/article/details/80523318](./img/QT/QT5-explaination1.png)
 
-![QT5 套件](./img/QT/QT5-kit.jpg)
+![配置 QT5，https://blog.csdn.net/qq_23473839/article/details/80523318](./img/QT/QT5-explaination2.png)
+
+![配置 QT5，https://blog.csdn.net/qq_23473839/article/details/80523318](./img/QT/QT5-explaination3.png)
+
+
+最后还需要配置套件（kit）：工具—选项—构建和运行—构建套件 （如果装了 QT4 再装 QT5，得先把环境变量删了，然后改下 QT version，最后改下 QT kit 里的编译器）
+
+![QT5 套件](./img/QT/QT5-kit.png)
 
 再来看下 QT5 的目录结构：
 
