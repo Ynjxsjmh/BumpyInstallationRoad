@@ -8,6 +8,13 @@
     - [可能出现的问题](#可能出现的问题)
         - [undefined reference to `mysql_init@4'](#undefined-reference-to-mysqlinit4)
         - [mysql.h	[Error] 'SOCKET' does not name a type](#mysqlh	error-socket-does-not-name-a-type)
+    - [操纵数据库](#操纵数据库)
+        - [创建表](#创建表)
+        - [插入数据](#插入数据)
+        - [更新数据](#更新数据)
+        - [显示表中所有数据](#显示表中所有数据)
+        - [mysql API 接口汇总](#mysql-api-接口汇总)
+        - [参考](#参考)
 
 <!-- markdown-toc end -->
 
@@ -49,19 +56,19 @@
 
 int main()
 {
-	MYSQL mysql;
-	mysql_init( &mysql );
-
-	if ( !mysql_real_connect( &mysql, "localhost", "root", "root", "crm", 3306, NULL, 0 ) )
-	{
-		printf( "\nconnect error!" );
-	} else   {
-		printf( "\nconnect success!\n" );
-	}
-
-	mysql_close( &mysql );
-
-	return(0);
+    MYSQL mysql;
+    mysql_init( &mysql );
+    
+    if ( !mysql_real_connect( &mysql, "localhost", "root", "root", "crm", 3306, NULL, 0 ) )
+    {
+        printf( "\nconnect error!" );
+    } else   {
+        printf( "\nconnect success!\n" );
+    }
+    
+    mysql_close( &mysql );
+    
+    return 0;
 }
 ```
 
@@ -81,4 +88,194 @@ undefined reference to `mysql_close@4'
 ### mysql.h	[Error] 'SOCKET' does not name a type
 
 得加上 `#include <winsock2.h>`，因为 `SOCKET` 是其中定义的一个类型
+
+## 操纵数据库
+
+其实所有的数据库操作都是先写个 sql 语句，然后用 mysql_query(&mysql, query)来完成，包括创建数据库或表，增删改查
+
+### 创建表
+```sql
+create table t1 (id int, name varchar(30));
+```
+
+### 插入数据
+
+```c
+#include <stdio.h>
+#include <winsock2.h>
+#include <mysql.h>
+#include <cstring>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    MYSQL mysql;
+    mysql_init( &mysql );
+    
+    if ( !mysql_real_connect( &mysql, "localhost", "root", "root", "test", 3306, NULL, 0 ) )
+    {
+        printf( "\nconnect error!" );
+    } else {
+        printf( "\nconnect success!\n" );
+    }
+    
+    string sql = "insert into t1 (id, name) values (1, 'java1');";
+    mysql_query( &mysql, sql.c_str() );
+    
+    mysql_close( &mysql );
+    
+    return 0;
+}
+```
+
+### 更新数据
+```c
+#include <stdio.h>
+#include <winsock2.h>
+#include <mysql.h>
+#include <cstring>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    MYSQL mysql;
+    mysql_init( &mysql );
+
+    if ( !mysql_real_connect( &mysql, "localhost", "root", "root", "test", 3306, NULL, 0 ) )
+    {
+        printf( "\nconnect error!" );
+    } else {
+        printf( "\nconnect success!\n" );
+    }
+
+    string sql = "insert into t1 (id,name) values (2, 'java2'),(3, 'java3');";
+    mysql_query( &mysql, sql.c_str() );
+
+    sql = "update t1 set name = 'java33' where id = 3;";
+    mysql_query( &mysql, sql.c_str() );
+
+    mysql_close( &mysql );
+
+    return 0;
+}
+```
+
+### 显示表中所有数据
+```c
+#include <stdio.h>
+#include <winsock2.h>
+#include <mysql.h>
+#include <cstring>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    MYSQL mysql;
+
+    MYSQL_RES *result = NULL;
+    MYSQL_FIELD *field = NULL;
+
+    mysql_init(&mysql);
+    mysql_real_connect( &mysql, "localhost", "root", "root", "test", 3306, NULL, 0 );
+
+    string sql = "select id, name from t1;";
+    mysql_query(&mysql, sql.c_str());
+    result = mysql_store_result(&mysql);
+
+    int rowcount = mysql_num_rows(result);
+    cout << "rowcount = " << rowcount << endl;
+    int fieldcount = mysql_num_fields(result);
+    cout << "fieldcount = " << fieldcount << endl;
+
+    for(int i = 0; i < fieldcount; i++)
+    {
+        field = mysql_fetch_field_direct(result,i);
+        cout << field->name << "\t\t";
+    }
+    cout << endl;
+
+    MYSQL_ROW row = NULL;
+    row = mysql_fetch_row(result);
+    while(NULL != row)
+    {
+        for(int i = 0; i < fieldcount; i++)
+        {
+            cout << row[i] << "\t\t";
+        }
+        cout << endl;
+        row = mysql_fetch_row(result);
+    }
+
+    mysql_close(&mysql);
+
+    return 0;
+}
+```
+
+### mysql API 接口汇总
+找不到官方文档。
+
+| 函数名                     | 含义                                                                                                  |
+| :--------                  | :-------------                                                                                        |
+| mysql_affected_rows()      | 返回被最新的 UPDATE, DELETE 或 INSERT 查询影响的行数。                                                |
+| mysql_close()              | 关闭一个服务器连接。                                                                                  |
+| mysql_connect()            | 连接一个 MySQL 服务器。该函数不推荐；使用 mysql_real_connect()代替。                                  |
+| mysql_change_user()        | 改变在一个打开的连接上的用户和数据库。                                                                |
+| mysql_create_db()          | 创建一个数据库。该函数不推荐；而使用 SQL 命令 CREATE DATABASE。                                       |
+| mysql_data_seek()          | 在一个查询结果集合中搜寻一任意行。                                                                    |
+| mysql_debug()              | 用给定字符串做一个 DBUG_PUSH。                                                                        |
+| mysql_drop_db()            | 抛弃一个数据库。该函数不推荐；而使用 SQL 命令 DROPDATABASE。                                          |
+| mysql_dump_debug_info()    | 让服务器将调试信息写入日志文件。                                                                      |
+| mysql_eof()                | 确定是否已经读到一个结果集合的最后一行。这功能被反对;  mysql_errno() 或 mysql_error()可以相反被使用。 |
+| mysql_errno()              | 返回最近被调用的 MySQL 函数的出错编号。                                                               |
+| mysql_error()              | 返回最近被调用的 MySQL 函数的出错消息。                                                               |
+| mysql_escape_string()      | 用在 SQL 语句中的字符串的转义特殊字符。                                                               |
+| mysql_fetch_field()        | 返回下一个表字段的类型。                                                                              |
+| mysql_fetch_field_direct() | 返回一个表字段的类型，给出一个字段编号。                                                              |
+| mysql_fetch_fields()       | 返回一个所有字段结构的数组。                                                                          |
+| mysql_fetch_lengths()      | 返回当前行中所有列的长度。                                                                            |
+| mysql_fetch_row()          | 从结果集合中取得下一行。                                                                              |
+| mysql_field_seek()         | 把列光标放在一个指定的列上。                                                                          |
+| mysql_field_count()        | 返回最近查询的结果列的数量。                                                                          |
+| mysql_field_tell()         | 返回用于最后一个 mysql_fetch_field()的字段光标的位置。                                                |
+| mysql_free_result()        | 释放一个结果集合使用的内存。                                                                          |
+| mysql_get_client_info()    | 返回客户版本信息。                                                                                    |
+| mysql_get_host_info()      | 返回一个描述连接的字符串。                                                                            |
+| mysql_get_proto_info()     | 返回连接使用的协议版本。                                                                              |
+| mysql_get_server_info()    | 返回服务器版本号。                                                                                    |
+| mysql_info()               | 返回关于最近执行得查询的信息。                                                                        |
+| mysql_init()               | 获得或初始化一个 MYSQL 结构。                                                                         |
+| mysql_insert_id()          | 返回有前一个查询为一个 AUTO_INCREMENT 列生成的 ID。                                                   |
+| mysql_kill()               | 杀死一个给定的线程。                                                                                  |
+| mysql_list_dbs()           | 返回匹配一个简单的正则表达式的数据库名。                                                              |
+| mysql_list_fields()        | 返回匹配一个简单的正则表达式的列名。                                                                  |
+| mysql_list_processes()     | 返回当前服务器线程的一张表。                                                                          |
+| mysql_list_tables()        | 返回匹配一个简单的正则表达式的表名。                                                                  |
+| mysql_num_fields()         | 返回一个结果集合重的列的数量。                                                                        |
+| mysql_num_rows()           | 返回一个结果集合中的行的数量。                                                                        |
+| mysql_options()            | 设置对 mysql_connect() 的连接选项。                                                                   |
+| mysql_ping()               | 检查对服务器的连接是否正在工作，必要时重新连接。                                                      |
+| mysql_query()              | 执行指定为一个空结尾的字符串的 SQL 查询。                                                             |
+| mysql_real_connect()       | 连接一个 MySQL 服务器。                                                                               |
+| mysql_real_query()         | 执行指定为带计数的字符串的 SQL 查询。                                                                 |
+| mysql_reload()             | 告诉服务器重装授权表。                                                                                |
+| mysql_row_seek()           | 搜索在结果集合中的行，使用从 mysql_row_tell() 返回的值。                                              |
+| mysql_row_tell()           | 返回行光标位置。                                                                                      |
+| mysql_select_db()          | 连接一个数据库。                                                                                      |
+| mysql_shutdown()           | 关掉数据库服务器。                                                                                    |
+| mysql_stat()               | 返回作为字符串的服务器状态。                                                                          |
+| mysql_store_result()       | 检索一个完整的结果集合给客户。                                                                        |
+| mysql_thread_id()          | 返回当前线程的 ID。                                                                                   |
+| mysql_use_result()         | 初始化一个一行一行地结果集合的检索。                                                                  |
+
+### 参考
+https://blog.csdn.net/fengzizhuang/article/details/12757769
+
+https://blog.csdn.net/u012234115/article/details/37934133
 
