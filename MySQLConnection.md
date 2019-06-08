@@ -16,6 +16,15 @@
         - [mysql API 接口汇总](#mysql-api-接口汇总)
         - [参考](#参考)
 
+- [CodeBlocks 连接 MySQL 数据库](#codeblocks-连接-mysql-数据库)
+    - [CodeBlocks 选项配置](#codeblocks-选项配置)
+    - [可能出现的问题](#可能出现的问题)
+        - [undefined reference to `mysql_init@4'](#undefined-reference-to-mysqlinit4)
+            - [下载 64 位的 Mingw](#下载-64-位的-mingw)
+            - [CodeBlocks 配置](#codeblocks-配置)
+        - [丢失 libmysql.dll 文件](#丢失-libmysqldll-文件)
+    - [参考](#参考)
+
 <!-- markdown-toc end -->
 
 # Dev 连接 MySQL 数据库
@@ -278,4 +287,68 @@ int main()
 https://blog.csdn.net/fengzizhuang/article/details/12757769
 
 https://blog.csdn.net/u012234115/article/details/37934133
+
+
+# CodeBlocks 连接 MySQL 数据库
+## CodeBlocks 选项配置
+Settings -> Compiler 看到 Global Compiler Settings
+
+1. 切换到 `Search Directories` 选项卡中的 `Complier`，在其中添加 `D:\SoftWare\MySQL\MySQL Server 5.6\include`（因为 mysql.h 就在该目录下）
+   ![CodeBlocks 添加搜索路径](./img/MySQLConnection/CodeBlocks-Search-Directories.png)
+   
+2. 添加 `libmysql.lib`
+   ![CodeBlocks 链接库](./img/MySQLConnection/CodeBlocks-Link-Library.png)
+
+   
+## 可能出现的问题
+### undefined reference to `mysql_init@4'
+
+```c
+undefined reference to `mysql_init@4'
+undefined reference to `mysql_real_connect@32'
+undefined reference to `mysql_close@4'
+```
+
+这个问题很可能是 CodeBlocks 为 32 位，而 Mysql 为 64 位，出现了不兼容问题。
+
+PS.
+1. 查看 CodeBlocks 位数：`Help -> About`
+2. 查看 MySQL 位数：在 MySQL 里运行 `show variables like 'version_compile_machine';`。
+   - i386/i686 是 32 bit, 
+   - x86_64 是 64 bit.
+   
+解决方法如下
+
+#### 下载 64 位的 Mingw
+在 https://sourceforge.net/projects/mingw-w64/ 下载安装并且配置好 64 位的编译器（mingw64）
+
+1. 主要就是 `Architecture` 选择 `x86_64`
+   ![Mingw64 下载配置](./img/MySQLConnection/mingw64-setup.png)
+   
+2. 然后选择一个常用的目录安装即可。
+
+#### CodeBlocks 配置
+接着我们要在 CodeBlocks 中配置使用下载的 64 位的 Mingw
+
+![CodeBlocks 使用 Mingw64](./img/MySQLConnection/CodeBlocks-Complier-Mingw64.png)
+
+然后我们在 `Settings -> Debugger` 创建一个新的叫做 `GDB64` 的 debugger.
+
+![CodeBlocks 新建 Debugger](./img/MySQLConnection/CodeBlocks-new-Debugger.png)
+
+里面主要更改 `Executable Path` 为刚刚下载的 bin 目录下的 gdb.exe 即可。
+
+![Debugger 配置路径](./img/MySQLConnection/CodeBlocks-new-Debugger-path.png)
+
+最后在本小节第一张图中的 `Debugger` 选择我们刚刚设置的就行。
+
+### 丢失 libmysql.dll 文件
+![丢失 libmysql.dll 文件](./img/MySQLConnection/lack-libmysql.png)
+
+将 Mysql 安装目录下的 lib 文件夹下的 `libmysql.dll` 文件复制到 CodeBlocks 安装目录下的 CodeBlocks\MinGW\bin 下即可。
+
+## 参考
+[codeblocks 连接 mysql 数据库](https://blog.csdn.net/Summer__show_/article/details/80748196)
+
+[codeblock 配置 mysql 环境方法及常见问题](https://blog.csdn.net/britainwei/article/details/9037861)
 
