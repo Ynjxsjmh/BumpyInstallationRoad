@@ -1,0 +1,1 @@
+Window -> Preferences -> Server -> Runtime Environment -> Add -> Choose the type of runtime envionment
