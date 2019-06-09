@@ -102,6 +102,17 @@ undefined reference to `mysql_close@4'
 
 其实所有的数据库操作都是先写个 sql 语句，然后用 mysql_query(&mysql, query)来完成，包括创建数据库或表，增删改查
 
+想要使用 where 语句进行筛选时，MySQL 里 char 类型最好加个引号，比如：
+
+```sql
+std::ostringstream buffer;
+buffer << "select * from user where username='" << username <<"'and password=" << password << ";";
+// 不加引号就错了
+// buffer << "select * from user where username=" << username <<" and password=" << password << ";";
+std::string search_user_sql = buffer.str();
+```
+
+
 ### 创建表
 ```sql
 create table t1 (id int, name varchar(30));
@@ -323,6 +334,7 @@ PS.
 在 https://sourceforge.net/projects/mingw-w64/ 下载安装并且配置好 64 位的编译器（mingw64）
 
 1. 主要就是 `Architecture` 选择 `x86_64`
+
    ![Mingw64 下载配置](./img/MySQLConnection/mingw64-setup.png)
    
 2. 然后选择一个常用的目录安装即可。
