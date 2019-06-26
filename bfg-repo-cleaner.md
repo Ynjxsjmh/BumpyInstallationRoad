@@ -43,12 +43,19 @@ regex:\r(\n)==>$1               # Replace Windows newlines with Unix newlines
   ```
   $ java -jar bfg.jar --replace-text passwords.txt  my-repo.git
   ```
+  
+  如果没有 push 到 Github 上，可以采取如下方法：
+  
+  ```
+  $ java -jar bfg.jar --replace-text passwords.txt "path/to/your/project/.git"
+  ```
+  
+  然后下面的 cd 采取同样的方法
 
 3. 完成之后进入到目录中
   ```
   $ cd my-repo.git
   $ git reflog expire --expire=now --all && git gc --prune=now --aggressive
-
   ```
 
 4. 最后 `git push` 即可
