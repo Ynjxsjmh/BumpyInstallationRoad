@@ -3,11 +3,13 @@
 
 - [Preferences](#preferences)
     - [font size](#font-size)
+    - [Encoding](#encoding)
     - [XML](#xml)
     - [Java](#java)
     - [Web](#web)
 - [Skills](#skills)
     - [Format Project](#format-project)
+    - [Fuzzy Feature](#fuzzy-feature)
 - [Maven 环境配置](#maven-环境配置)
 - [lombok 插件安装](#lombok-插件安装)
     - [下载 lombok](#下载-lombok)
@@ -22,6 +24,10 @@
 # Preferences
 ## font size
 - `Window -> Preferences -> General -> Appearance -> Colors and Fonts` find `Text Font`
+
+## Encoding
+- Text file : `Window -> Preferences -> General -> Workspace -> Text file encoding`
+- JSP file : `Window -> Preferences -> Web -> JSP Files`
 
 ## XML
 - `Window -> Preferences -> XML -> Xml Files -> Editor` uncheck `join lines`
