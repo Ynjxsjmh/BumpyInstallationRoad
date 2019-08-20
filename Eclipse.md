@@ -62,6 +62,12 @@ https://stackoverflow.com/a/47798964/10315163
    1. Right click on the project root in `Project Explore` and select `Source -> Format`
    2. Web files would be formatted
 
+## Fuzzy Feature
+Use `*` to begin fuzzy search in **Quick Switch Editor** (ctrl+E)
+
+Fuzzy auto completation: `Window -> Preferences -> Code Recommenders -> Completions`, check the option [Enable intelligent code completion] and [Subwords-Completion Processor].
+
+
 # Maven 环境配置
 
 1. `Window —> Preferences` 进入环境配置页面
