@@ -37,6 +37,12 @@
   - Auto activation delay(ms): 0
   - Prompt when these characters are inserted: `<=:!.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW`
 
+## Shortcut Key
+
+- Modify `Window -> Preferences -> General -> Keys` to navigate the content assist popup
+  - Filter by `line down` then map `binding` to `Ctrl-N` when `Editing Java Source`
+  - Filter by `line up` then map `binding` to `Ctrl-P` when `Editing Java Source`
+
 
 ## Java
 - `Window -> Preferences -> Java -> Code Style -> Formatter -> Edit -> Indentations -> Spaces Only -> Rename`
