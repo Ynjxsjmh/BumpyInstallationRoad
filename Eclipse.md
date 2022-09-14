@@ -53,7 +53,7 @@
 
 - `Window -> Preferences -> Java -> Editor -> Content Assist -> Auto Activation`
   1. `Auto activation delay`: `0`
-  2. `Auto activation triggers for Java`: `.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW`
+  2. `Auto activation triggers for Java`: `._abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW`
   3. `Auto activation triggers for Javadoc`: `@#`
 
 ## Web
